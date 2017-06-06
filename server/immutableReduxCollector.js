@@ -9,14 +9,14 @@ class ImmutableReduxCollector extends ReduxCollector {
   appendToHead($head) {
     $head.append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.min.js"></script>`);
     $head.append(`<script>
-      window.__PRELOADED_STATE__ = Immutable.fromJS(${JSON.stringify(this.finalState ? this.finalState.toJS() : {})})
+      window.__PRELOADED_STATE__ = Immutable.fromJS(${JSON.stringify(this.state ? this.state.toJS() : {})})
       </script>`);
   }
 
   wrapApp(appElement) {
-    const store = createStore(this.reducers, isEmpty(this.states) ? undefined : immutable.fromJS(this.states));
+    const store = createStore(this.reducers, isEmpty(this.initialState) ? undefined : immutable.fromJS(this.initialState));
     const wrapedElements = react.createElement(Provider, {store}, appElement);
-    this.finalState = store.getState();
+    this.state = store.getState();
     return wrapedElements;
   }
 }

@@ -85,6 +85,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@canner/render": "0.0.2",
     "bluebird": "^3.5.0",
     "immutable": "^3.8.1",
     "request": "^2.81.0",
