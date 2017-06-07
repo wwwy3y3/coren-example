@@ -16,6 +16,7 @@ getDB().then(db => {
   const collectorManager = new CollectorManager({
     appPath: path.resolve(__dirname, '../lib')
   });
+  // register collectors
   collectorManager.registerCollector("head", new HeadCollector());
   collectorManager.registerCollector("routes", new RoutesCollector({
     componentProps: {
@@ -28,15 +29,21 @@ getDB().then(db => {
     },
     reducers: reducer
   }));
+
+  // ssr
   const ssr = new MultiRoutesRenderer({
     collectorManager,
     js: ["/bundle.js"]
   });
+
+  // get the array of html result
   ssr.renderToString()
   .then(results => {
     return Promise.all(results.map(result => {
       const filepath = path.join(__dirname, '../public', getPath(result.route));
       mkdirp.sync(path.resolve(filepath, "../"));
+
+      // write to filesystem
       return fs.writeFileAsync(filepath, result.html);
     }));
   })
