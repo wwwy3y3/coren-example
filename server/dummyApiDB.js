@@ -12,5 +12,7 @@ module.exports = function getDB() {
   .then(json => {
     return db.insertAsync(JSON.parse(json));
   })
-  .then(() => db);
+  .then(() => {
+    return {users: db};
+  });
 };

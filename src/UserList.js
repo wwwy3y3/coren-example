@@ -20,13 +20,26 @@ export default class UserList extends Component {
   }
 
   static defineRoutes({Url}) {
-    return new Url({
-      url: '/users'
-    });
+    return new Url('/users');
+  }
+
+  static definePreloadedState({db}) {
+    return db.users.find().execAsync()
+    .then(list => ({
+      users: {
+        list,
+        fetched: true,
+        isFetching: false,
+        error: false
+      }
+    }));
   }
 
   componentDidMount() {
-    this.props.fetchAllUsers();
+    const {users} = this.props;
+    if (!users.get('fetched')) {
+      this.props.fetchAllUsers();
+    }
   }
 
   render() {

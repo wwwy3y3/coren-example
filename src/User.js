@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {fetchUser} from './actions';
 import collector from '@canner/render/lib/client/collectorHoc';
+import immutable from 'immutable';
 
 @collector()
 @connect(mapStateToProps, mapDispatchToProps)
@@ -12,19 +13,35 @@ export default class UserList extends Component {
     user: PropTypes.object
   };
 
-  static defineHead() {
+  static defineHead(props) {
+    const userId = props.match.params.id;
     return {
-      title: "user",
-      description: "user"
+      title: `user ${userId}`,
+      description: `user ${userId}`
     };
   }
 
   static defineRoutes({ParamUrl, db}) {
     return new ParamUrl({
       url: '/users/:id',
-      dataProvider: () => db.find().execAsync()
+      dataProvider: () => db.users.find().execAsync()
     });
   }
+
+  static definePreloadedState() {
+    return Promise.resolve({
+      currentUser: {
+        data: {},
+        fetched: false,
+        isFetching: false,
+        error: false
+      }
+    });
+  }
+
+  static defaultProps = {
+    user: new immutable.Map()
+  };
 
   componentDidMount() {
     const {fetchUser, userId} = this.props;

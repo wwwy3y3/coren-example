@@ -8,6 +8,9 @@ const {
 } = require('@canner/render');
 const ImmutableReduxCollector = require('./immutableReduxCollector');
 const reducer = require('../lib/reducer');
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require("fs"));
+const mkdirp = require('mkdirp');
 
 getDB().then(db => {
   const collectorManager = new CollectorManager({
@@ -25,8 +28,21 @@ getDB().then(db => {
     },
     reducers: reducer
   }));
-  const ssr = new MultiRoutesRenderer({collectorManager});
+  const ssr = new MultiRoutesRenderer({
+    collectorManager,
+    js: ["/bundle.js"]
+  });
   ssr.renderToString()
-  .then(str => console.log(str))
+  .then(results => {
+    return Promise.all(results.map(result => {
+      const filepath = path.join(__dirname, '../public', getPath(result.route));
+      mkdirp.sync(path.resolve(filepath, "../"));
+      return fs.writeFileAsync(filepath, result.html);
+    }));
+  })
   .catch(err => console.log(err));
 });
+
+function getPath(route) {
+  return `${route}/index.html`;
+}

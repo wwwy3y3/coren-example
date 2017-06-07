@@ -61,18 +61,16 @@
   },
   "scripts": {
     "lint": "eslint src test docs",
-    "clean": "rimraf lib dist",
+    "clean": "rimraf lib public",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build": "npm run build:commonjs",
-    "prepublish": "npm run clean && npm run check:src && npm run build",
+    "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.config.prod.js",
+    "build:ssr": "node ./server/ssr",
+    "build": "npm run build:commonjs && npm run build:webpack && npm run build:ssr",
+    "serve": "npm run clean && npm run build && ./node_modules/.bin/serve ./public",
     "check:src": "npm run lint && npm run test",
     "test": "cross-env BABEL_ENV=test karma start --single-run",
     "test:watch": "cross-env BABEL_ENV=test karma start",
     "start": "node devServer.js",
-    "gh-pages:clean": "rimraf _gh-pages && ncp ./docs ./_gh-pages",
-    "gh-pages:build": "cross-env BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.config.ghPage.js",
-    "gh-pages:publish": "git-directory-deploy --directory _gh-pages",
-    "gh-pages": "npm run gh-pages:clean && npm run gh-pages:build && npm run gh-pages:publish",
     "validate": "npm ls"
   },
   "pre-commit": [
@@ -85,9 +83,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@canner/render": "0.0.2",
+    "@canner/render": "0.0.5",
     "bluebird": "^3.5.0",
     "immutable": "^3.8.1",
+    "mkdirp": "^0.5.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   }
