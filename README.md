@@ -1,15 +1,22 @@
-# render-example
-此範例展示如何使用 render 處理 常見情況 React SPA 的 serverside render，最後 build 到 local filesystem，用 `serve` 展示
+# Coren-example
+This example repo shows how to serverside render React Single Page App with `coren`
 
-使用 react-router v4 的網站，使用 SSR 加強SEO 或是 build html 到 cdn 上都適用 
+# Usage
+``` sh
+$ git clone git@github.com:Canner/coren-example.git
+$ npm install
+$ npm run serve
+$ open http://localhost:5000
+view source to see HTML
+```
 
 ## modules used
 * react-router v4
 * redux
 * redux-api-middleware
 
-## 此範例如何使用 collector
-* routesCollector 產生需要 ssr 的 url
+## How this example use Coren
+* use `RoutesCollector` to generate routes need to be rendered
 ``` js
 // /src/Home
 static defineRoutes({Url}) {
@@ -19,8 +26,7 @@ static defineRoutes({Url}) {
 
 ``` js
 // /src/User
-// server 會執行 db.users.find().execAsync() 取得資料後對照 '/users/:id'
-// 產生多個 url
+// server will execute db.users.find().execAsync(), get the data then generate multiple routes with path '/users/:id'
 static defineRoutes({ParamUrl, db}) {
   return new ParamUrl({
     url: '/users/:id',
@@ -36,7 +42,7 @@ static defineRoutes({Url}) {
 }
 ```
 
-* headCollector 處理 title, description
+* use `HeadCollector` to get title, description
 ``` js
 // /src/User
 static defineHead(props) {
@@ -47,22 +53,21 @@ static defineHead(props) {
   };
 }
 ```
-User component 使用 defineHead 使用 component construct 時拿到的props，拿到從 react-router route 傳下來的 match 參數，並放在title跟description中
 
-* immutable redux collector
-由於在 reducer 中，我們常用 immutable 作為 state，所以 render 在 html 中，需要用immutable在包起來，傳到reducer中才不會出錯
+* customized `ImmutableReduxCollector`
+as a best practice in our team, we use immutable state in redux. so we modify some part of ReduxCollector
 ``` js
 class ImmutableReduxCollector extends ReduxCollector {
   appendToHead($head) {
     $head.append(`<script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.min.js"></script>`);
-    // render __PRELOADED_STATE__ 時，用Immutable.fromJS包起來
+    // wrap state with Immutable, when rendered in HTML
     $head.append(`<script>
       window.__PRELOADED_STATE__ = Immutable.fromJS(${JSON.stringify(this.state ? this.state.toJS() : {})})
       </script>`);
   }
 
   wrapApp(appElement) {
-    // 如果 透過 collector 搜集回來的 initialState 是空的，則傳 undefined 到 store中 ，讓 store 產生 initialState
+    // if initialState collected from components is empty, we pass undefined to store , let store.getState() be the intial state in reducer 
     const store = createStore(this.reducers, isEmpty(this.initialState) ? undefined : immutable.fromJS(this.initialState));
     const wrapedElements = react.createElement(Provider, {store}, appElement);
     this.state = store.getState();
@@ -70,7 +75,8 @@ class ImmutableReduxCollector extends ReduxCollector {
   }
 }
 ```
-component中使用 definePreloadedState 回傳自己使用的 initialState
+
+in Component, we use `definePreloadedState` return initialState this component need
 ``` js
 // /src/UserList
 // 透過 server 傳過來的 db 做出 query
@@ -85,13 +91,6 @@ static definePreloadedState({db}) {
     }
   }));
 }
-```
-
-## Usage
-```js
-$ npm run serve
-$ open localhost:5000
-view source to see the html built
 ```
 
 ## dev server

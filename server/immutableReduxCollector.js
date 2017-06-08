@@ -2,7 +2,7 @@ const {createStore} = require('redux');
 const {Provider} = require('react-redux');
 const react = require('react');
 const immutable = require('immutable');
-const {ReduxCollector} = require('@canner/render');
+const {ReduxCollector} = require('coren');
 const {isEmpty} = require('lodash');
 
 class ImmutableReduxCollector extends ReduxCollector {
@@ -13,7 +13,7 @@ class ImmutableReduxCollector extends ReduxCollector {
       </script>`);
   }
 
-  wrapApp(appElement) {
+  wrapElement(appElement) {
     const store = createStore(this.reducers, isEmpty(this.initialState) ? undefined : immutable.fromJS(this.initialState));
     const wrapedElements = react.createElement(Provider, {store}, appElement);
     this.state = store.getState();

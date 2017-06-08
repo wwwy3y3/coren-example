@@ -1,11 +1,11 @@
 const path = require('path');
 const getDB = require('./dummyApiDB');
 const {
-  CollectorManager,
+  App,
   MultiRoutesRenderer,
   HeadCollector,
   RoutesCollector
-} = require('@canner/render');
+} = require('coren');
 const ImmutableReduxCollector = require('./immutableReduxCollector');
 const reducer = require('../lib/reducer');
 const Promise = require('bluebird');
@@ -13,17 +13,17 @@ const fs = Promise.promisifyAll(require("fs"));
 const mkdirp = require('mkdirp');
 
 getDB().then(db => {
-  const collectorManager = new CollectorManager({
-    appPath: path.resolve(__dirname, '../lib')
+  const app = new App({
+    path: path.resolve(__dirname, '../lib')
   });
   // register collectors
-  collectorManager.registerCollector("head", new HeadCollector());
-  collectorManager.registerCollector("routes", new RoutesCollector({
+  app.registerCollector("head", new HeadCollector());
+  app.registerCollector("routes", new RoutesCollector({
     componentProps: {
       db
     }
   }));
-  collectorManager.registerCollector("redux", new ImmutableReduxCollector({
+  app.registerCollector("redux", new ImmutableReduxCollector({
     componentProps: {
       db
     },
@@ -32,7 +32,7 @@ getDB().then(db => {
 
   // ssr
   const ssr = new MultiRoutesRenderer({
-    collectorManager,
+    app,
     js: ["/bundle.js"]
   });
 

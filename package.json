@@ -1,6 +1,6 @@
 {
-  "name": "render-example",
-  "version": "0.0.0",
+  "name": "coren-example",
+  "version": "1.0.0",
   "description": "",
   "homepage": "",
   "author": {
@@ -83,7 +83,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@canner/render": "0.0.5",
+    "coren": "^1.0.0",
     "bluebird": "^3.5.0",
     "immutable": "^3.8.1",
     "mkdirp": "^0.5.1",

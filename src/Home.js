@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import collector from '@canner/render/lib/client/collectorHoc';
+import collector from 'coren/lib/client/collectorHoc';
 
 @collector()
 export default class Root extends Component {

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {fetchAllUsers} from './actions';
 import {Link} from 'react-router-dom';
-import collector from '@canner/render/lib/client/collectorHoc';
+import collector from 'coren/lib/client/collectorHoc';
 
 @collector()
 @connect(mapStateToProps, mapDispatchToProps)
