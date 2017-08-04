@@ -3,8 +3,21 @@ import {Route, Link} from 'react-router-dom';
 import Home from './Home';
 import UserList from './UserList';
 import User from './User';
+import {collector} from 'coren';
 
+@collector()
 export default class Root extends Component {
+  static defineHead() {
+    return {
+      title: "home",
+      description: "home description"
+    };
+  }
+
+  static defineRoutes({Url}) {
+    return new Url('/');
+  }
+
   render() {
     return (
         <div>
