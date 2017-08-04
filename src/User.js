@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {fetchUser} from './actions';
-import collector from 'coren/lib/client/collectorHoc';
+import {collector} from 'coren';
 import immutable from 'immutable';
 
 @collector()
