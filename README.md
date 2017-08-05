@@ -4,9 +4,10 @@ This example repo shows how to serverside render React Single Page App with `cor
 # Usage
 ``` sh
 $ git clone git@github.com:Canner/coren-example.git
-$ npm install
-$ npm run serve
-$ open http://localhost:5000
+$ yarn
+$ npm run coren
+$ node app.js
+$ open http://localhost:9393
 view source to see HTML
 ```
 
