@@ -2,14 +2,35 @@
 This example repo shows how to serverside render React Single Page App with `coren`
 
 # Usage
-``` sh
+
+```sh
 $ git clone git@github.com:Canner/coren-example.git
 $ yarn
-$ npm run coren
+```
+
+## development
+
+test in development mode, with hot-reload
+
+```sh
+$ npm run webpack-server
 $ node app.js
 $ open http://localhost:9393
 view source to see HTML
 ```
+
+## production
+
+test in production mode, with real ssr result
+
+```sh
+$ npm run coren
+$ npm run webpack-server
+$ COREN_ENV=pre-production node app.js
+view source to see HTML
+```
+
+# Explanation
 
 ## modules used
 * react-router v4
