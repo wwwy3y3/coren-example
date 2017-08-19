@@ -33,7 +33,7 @@ module.exports = {
     const rel = path.relative(`${__dirname}/dist/`, absolutePath);
     switch (env) {
       case 'production':
-        return `https://static.canner.io.s3.amazonaws.com/static.canner.io/coren-example/dist/${rel}`;
+        return `https://s3-ap-northeast-1.amazonaws.com/static.canner.io/coren-example/dist/${rel}`;
       case 'development':
       case 'pre-production':
         return `http://localhost:5556/dist/${rel}`;
