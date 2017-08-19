@@ -10,13 +10,14 @@ const extractCSS = new ExtractTextPlugin({
   filename: 'css/[name].css',
   allChunks: true
 });
+
 module.exports = {
   entry: {
-    index: './src/index.js'
+    index: './src/index.js',
+    $vendor: ['react', 'react-dom', 'react-router']
   },
   webpack: {
     plugins: [
-      new webpack.BannerPlugin('This file is created by coren. Built time: ' + new Date()),
       extractCSS
     ],
     module: {
@@ -29,10 +30,10 @@ module.exports = {
     }
   },
   assetsHost: (env, absolutePath = '') => {
-    const rel = path.relative(`${__dirname}/coren-build/assets`, absolutePath);
+    const rel = path.relative(`${__dirname}/dist/`, absolutePath);
     switch (env) {
       case 'production':
-        return 'https://s3-path/' + absolutePath;
+        return `https://static.canner.io.s3.amazonaws.com/static.canner.io/coren-example/dist/${rel}`;
       case 'development':
       case 'pre-production':
         return `http://localhost:5556/dist/${rel}`;

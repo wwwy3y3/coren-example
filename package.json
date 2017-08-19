@@ -15,16 +15,34 @@
   "keywords": [
     ""
   ],
+  "scripts": {
+    "lint": "eslint src test docs",
+    "coren-clean": "rimraf .coren coren-build",
+    "clean": "rimraf lib public",
+    "coren": "npm run build:commonjs && coren",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.config.prod.js",
+    "build:ssr": "node ./server/ssr",
+    "build": "npm run build:commonjs && npm run build:webpack && npm run build:ssr",
+    "coren-dev": "coren dev",
+    "coren-production": "NODE_ENV=production coren build --skipClientJS",
+    "serve": "npm run clean && npm run build && ./node_modules/.bin/serve ./public",
+    "check:src": "npm run lint && npm run test",
+    "test": "cross-env BABEL_ENV=test karma start --single-run",
+    "test:watch": "cross-env BABEL_ENV=test karma start",
+    "start": "node devServer.js",
+    "validate": "npm ls",
+    "webpack-server": "webpack-dev-server --config webpack.config.dev.js --hot --inline --port 5556"
+  },
   "dependencies": {
     "bluebird": "^3.5.0",
-    "coren": "^1.4.4",
+    "coren": "^1.4.6",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "immutable": "^3.8.1",
     "mkdirp": "^0.5.1",
     "request": "^2.81.0",
-    "request-promise": "^4.2.1",
-    "webpack-dev-server": "^2.7.1"
+    "request-promise": "^4.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
@@ -46,18 +64,12 @@
     "eslint-plugin-react": "^6.2.0",
     "express": "^4.15.3",
     "git-directory-deploy": "^1.5.1",
-    "karma": "^1.2.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-cli": "^1.0.1",
-    "karma-mocha": "^1.1.1",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^1.8.0",
-    "mocha": "^3.2.0",
-    "ncp": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-gzip": "^1.4.0",
+    "gulp-s3": "^0.11.0",
     "nedb": "^1.8.0",
     "precommit-hook-eslint": "^3.0.0",
     "react": "^15.3.1",
-    "react-addons-test-utils": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
@@ -66,29 +78,15 @@
     "redux-logger": "^3.0.6",
     "rimraf": "^2.5.4",
     "serve": "^5.2.1",
-    "webpack": "2.2.0-rc.3",
-    "webpack-hot-middleware": "^2.12.2"
-  },
-  "scripts": {
-    "lint": "eslint src test docs",
-    "clean": "rimraf lib public",
-    "coren": "npm run build:commonjs && coren",
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:webpack": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack.config.prod.js",
-    "build:ssr": "node ./server/ssr",
-    "build": "npm run build:commonjs && npm run build:webpack && npm run build:ssr",
-    "serve": "npm run clean && npm run build && ./node_modules/.bin/serve ./public",
-    "check:src": "npm run lint && npm run test",
-    "test": "cross-env BABEL_ENV=test karma start --single-run",
-    "test:watch": "cross-env BABEL_ENV=test karma start",
-    "start": "node devServer.js",
-    "validate": "npm ls",
-    "webpack-server": "webpack-dev-server --config webpack.config.dev.js --hot --inline --port 5556"
+    "webpack": "^3.0.0",
+    "webpack-dev-middleware": "^1.10.0",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-hot-middleware": "^2.0.0"
   },
   "pre-commit": [
     "lint"
   ],
-  "repository": "Canner/render-example",
+  "repository": "Canner/coren-example",
   "peerDependencies": {
     "react": "^15.3.1",
     "react-dom": "^15.3.1"

@@ -4,5 +4,8 @@ npm-debug.log
 lib
 .DS_Store
 _gh-pages
-.coren
 coren-build
+dist
+gulpfile.js
+.coren/commonjs
+.coren/tmp
