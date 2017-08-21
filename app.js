@@ -20,7 +20,7 @@ app.get('/users/:id', function(req, res) {
   return res.sendCoren('index/users/' + id);
 });
 
-app.listen(app.get('port'), 'localhost', function(err) {
+app.listen(app.get('port'), function(err) {
   if (err) {
     console.log(err);
     return;
