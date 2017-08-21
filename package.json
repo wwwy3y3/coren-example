@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.0",
-    "coren": "^1.5.0",
+    "coren": "^1.5.1",
     "css-loader": "^0.28.4",
     "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.0",
