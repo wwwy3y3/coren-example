@@ -1,6 +1,8 @@
 # Coren-example
 This example repo shows how to serverside render React Single Page App with `coren`
 
+[Demo](https://nameless-taiga-65782.herokuapp.com)
+
 # Usage
 
 ```sh
