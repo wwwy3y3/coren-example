@@ -9,7 +9,9 @@ const extractCSS = new ExtractTextPlugin({
 });
 
 const config = new CorenWebpack(__dirname, {
-  // entry is defined in `coren.config.js`
+  entry: {
+    index: './src/root.js'
+  },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
@@ -22,7 +24,8 @@ const config = new CorenWebpack(__dirname, {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify("production")
+        NODE_ENV: JSON.stringify("production"),
+        isBrowser: true
       }
     }),
     new webpack.optimize.UglifyJsPlugin({

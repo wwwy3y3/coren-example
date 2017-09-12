@@ -1,8 +1,4 @@
-const webpack = require('webpack');
-const {HeadCollector, RoutesCollector} = require('coren');
-const ImmutableReduxCollector = require('./server/immutableReduxCollector');
 const getDB = require('./server/dummyApiDB');
-const reducer = require('./lib/reducer');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -16,7 +12,7 @@ module.exports = {
     index: './src/index.js',
     $vendor: ['react', 'react-dom', 'react-router']
   },
-  webpack: {
+  ssrWebpack: {
     plugins: [
       extractCSS
     ],
@@ -40,18 +36,6 @@ module.exports = {
       default:
         return false;
     }
-  },
-  registerCollector: function(app, {context}) {
-    app.registerCollector("head", new HeadCollector());
-    app.registerCollector("routes", new RoutesCollector({
-      componentProps: {db: context.db}
-    }));
-    app.registerCollector("redux", new ImmutableReduxCollector({
-      componentProps: {db: context.db},
-      reducers: reducer,
-      configureStore: path.resolve(__dirname, './src/configureStore')
-    }));
-    return app;
   },
   prepareContext: function() {
     return getDB().then(db => ({db}));
