@@ -1,4 +1,6 @@
 # Coren-example
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Canner/coren-example.svg)](https://greenkeeper.io/)
 This example repo shows how to serverside render React Single Page App with `coren`
 
 [Demo](https://nameless-taiga-65782.herokuapp.com)
